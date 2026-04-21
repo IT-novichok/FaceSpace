@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href={{url_for('static', filename='css/main-style.css' )}}>
+    <title>{{title}}</title>
+</head>
+
+<body>
+    <header>
+        <div class="brand">
+            <img class='small-logo'>
+            <h1>FaceSpace</h1>
+            <h4>Find anyone for anything</h4>
+        </div>
+        <nav class="navbar">
+            <a href="/">Home</a>
+            <a href="/profile">Profile</a>
+            <a href="/find">Find</a>
+        </nav>
+        <div>
+            {% if current_user.is_authenticated %}
+
+                <a class="navbar-brand" href="/profile"><button>Profile</button></a>
+            {% else %}
+                <p>
+                    <a class="btn btn-primary " href="/register"><button>Register</button></a>
+                    <a class="btn btn-success" href="/login"><button>Log in</button></a>
+                </p>
+            {% endif %}
+        </div>
+
+    </header>
+    <!-- Begin page content -->
+    <main role="main">
+        {% block content %}{% endblock %}
+    </main>
+    <footer>
+        <h5>© 2026 FaceSpace, Reflection</h5>
+        <div>All rules are conserved</div>
+    </footer>
+</body>
+</html>

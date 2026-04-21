@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="center">
+    <div style="width: 30vw;" class="box">
+        <form action="" method="post">
+            <h1 style="text-align:center">Register</h1>
+            {{form.hidden_tag() }}
+            <p>
+                {{ form.name.label}}
+                {{ form.name(class="form-control", type="text") }}<br>
+                {% for error in form.name.errors %}
+            <div class="alert alert-danger" role="alert">
+                {{ error }}
+            </div>
+            {% endfor %}
+            </p>
+            <p>
+                {{form.nickname.label }}
+                {{form.nickname(class="form-control", type="text") }}<br>
+                {% for error in form.nickname.errors %}
+            <div class="alert alert-danger" role="alert">
+                {{ error }}
+            </div>
+            {% endfor %}
+            </p>
+            <p>
+                {{ form.email.label }}
+                {{ form.email(class="form-control", type="email") }}<br>
+                {% for error in form.email.errors %}
+            <div class="alert alert-danger" role="alert">
+                {{ error }}
+            </div>
+            {% endfor %}
+            </p>
+            <p>
+                {{ form.password.label}}
+                {{ form.password(class="form-control", type="password") }}<br>
+                {% for error in form.password.errors %}
+            <div class="alert alert-danger" role="alert">
+                {{ error }}
+            </div>
+            {% endfor %}
+            </p>
+            <p>
+                {{ form.password_again.label}}
+                {{ form.password_again(class="form-control", type="password") }}<br>
+                {% for error in form.password_again.errors %}
+            <div class="alert alert-danger" role="alert">
+                {{ error }}
+            </div>
+            {% endfor %}
+            </p>
+            <p>
+                {{ form.birth_date.label }}
+                {{ form.birth_date(class="form-control", type="date") }}<br>
+                {% for error in form.birth_date.errors %}
+            <div class="alert alert-danger" role="alert">
+                {{ error }}
+            </div>
+            {% endfor %}
+            </p>
+            <p>
+                {{ form.gender.label }}
+                {{form.gender(class="form-control")}}<br>
+                {% for error in form.gender.errors %}
+            <div class="alert alert-danger" role="alert">
+                {{ error }}
+            </div>
+            {% endfor %}
+            </p>
+            <p>{{form.submit(type="submit", class="btn btn-primary") }}</p>
+            <div>{{ message }}</div>
+        </form>
+    </div>
+
+</div>
+{% endblock %}
