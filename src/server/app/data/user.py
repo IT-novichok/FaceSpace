@@ -19,6 +19,8 @@ class User(SqlAlchemyBase, UserMixin):
     birth_date = sqlalchemy.Column(sqlalchemy.DateTime, nullable=True)
     about = sqlalchemy.Column(sqlalchemy.String, nullable=True)
     contacts = sqlalchemy.Column(sqlalchemy.String, nullable=True)
+    view_history = sqlalchemy.Column(sqlalchemy.JSON, nullable=True)
+    action_history = sqlalchemy.Column(sqlalchemy.JSON, nullable=True)
     registration_date = sqlalchemy.Column(sqlalchemy.DateTime, nullable=True, default=datetime.now())
 
     def set_password(self, password):

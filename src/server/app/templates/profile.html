@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="stand">
+        <div class="banner">
+
+        </div>
+        <div class="column">
+            <div class="row">
+                <div class="horz-center column">
+                    <img class="avatar-big">
+                    <h3>{{ profile['nickname'] }}</h3>
+                    <h5><a href="/users/{{ profile['name'] }}" class="tag">@{{ profile['name'] }}</a></h5>
+
+                </div>
+                <div class="column">
+                    <div class="box">
+                        <h4 class="text-center">Description</h4>
+                        {{ profile['about'] }}
+                    </div>
+                    <div class="box">
+                        <h4 class="text-center">Contacts</h4>
+                        {{ profile['about'] }}
+                    </div>
+
+                </div>
+            </div>
+            <h3>All adverisments</h3>
+            <div class="card-gridview">
+                {% for i in range(4) %}
+                    <div class="card">
+                        <a>
+                            <div class="center">
+                                <img class='card-cover'>
+                            </div>
+                            <h5>Card {{ i + 1 }}</h5>
+                        </a>
+                        <div>Description</div>
+                        <a class="vert-center"><img class="avatar-small">Profile</a>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="banner">
+
+        </div>
+
+
+    </div>
+
+{% endblock %}

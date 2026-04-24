@@ -1,26 +1,35 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="search-bar">
-    <a><button class="img-btn"><img src="{{url_for('static',filename='img/icons/search.png')}}"></button></a>
-    <input type="search" placeholder="Search">
-</div>
-<nav class="tab-bar">
-    <a class="tab">Friends</a>
-    <a class="tab">Buisness</a>
-</nav>
-<h1>All advertisements</h1>
-<div class="card-gridview">
-    {% for i in range(16) %}
-    <div class="card">
-        <div class="center">
-            <img class = 'card-cover'>
-        </div>
-        <h4>Card {{i}}</h4>
-        <div>Description</div>
-        <a class="vert-center"><img class="avatar-small">Profile</a>
+    <div class="search-bar">
+        <a>
+            <button class="search-btn"><img src="{{ url_for('static',filename='img/icons/search.png') }}"></button>
+        </a>
+        <input type="search" placeholder="Search">
     </div>
-    {% endfor %}
-</div>
+    <nav class="tab-bar">
+        {% for category in categories %}
+            {% if category == selected_category %}
+            <a href="/categories/{{ category }}" class="tab selected">{{ category.capitalize()}}</a>
+            {% else %}
+            <a href="/categories/{{ category }}" class="tab">{{ category.capitalize()}}</a>
+            {%  endif %}
+        {% endfor %}
+    </nav>
+    <h1>{{ selected_category.capitalize() if selected_category else 'All advertisments' }}</h1>
+    <div class="card-gridview">
+        {% for i in range(16) %}
+            <div class="card">
+                <a>
+                    <div class="center">
+                        <img class='card-cover'>
+                    </div>
+                    <h5>Card {{ i + 1 }}</h5>
+                </a>
+                <div>Description</div>
+                <a class="vert-center"><img class="avatar-small">Profile</a>
+            </div>
+        {% endfor %}
+    </div>
 
 {% endblock %}
