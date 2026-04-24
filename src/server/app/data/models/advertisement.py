@@ -1,11 +1,10 @@
 from datetime import datetime
 import sqlalchemy
 from sqlalchemy import orm
+from ..database import db
 
-from .db_session import SqlAlchemyBase
 
-
-class Advertisement(SqlAlchemyBase):
+class Advertisement(db.Model):
     __tablename__ = 'advertisements'
 
     id = sqlalchemy.Column(sqlalchemy.Integer,

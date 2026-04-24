@@ -229,13 +229,13 @@ input[type="submit"]:hover {
 }
 
 input[type="submit"] {
-    background-color: var(--mg-color);
+    color: var(--text-on-accent-color);
+    background-color: var(--accent-color);
     border: none;
 }
 
 input[type="submit"]:active {
     scale: 95%;
-    color: var(--text-on-accent-color);
     background-color: var(--accent-color);
 }
 

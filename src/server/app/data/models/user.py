@@ -1,11 +1,11 @@
 from datetime import datetime
 import sqlalchemy
 from flask_login import UserMixin
-from .db_session import SqlAlchemyBase
+from ..database import db
 from werkzeug.security import generate_password_hash, check_password_hash
 
 
-class User(SqlAlchemyBase, UserMixin):
+class User(db.Model, UserMixin):
     __tablename__ = 'users'
 
     id = sqlalchemy.Column(sqlalchemy.Integer,
@@ -19,8 +19,6 @@ class User(SqlAlchemyBase, UserMixin):
     birth_date = sqlalchemy.Column(sqlalchemy.DateTime, nullable=True)
     about = sqlalchemy.Column(sqlalchemy.String, nullable=True)
     contacts = sqlalchemy.Column(sqlalchemy.String, nullable=True)
-    view_history = sqlalchemy.Column(sqlalchemy.JSON, nullable=True)
-    action_history = sqlalchemy.Column(sqlalchemy.JSON, nullable=True)
     registration_date = sqlalchemy.Column(sqlalchemy.DateTime, nullable=True, default=datetime.now())
 
     def set_password(self, password):
@@ -28,3 +26,13 @@ class User(SqlAlchemyBase, UserMixin):
 
     def check_password(self, password):
         return check_password_hash(self.password, password)
+
+    def get_profile(self):
+        return {
+            'id': self.id,
+            'name': self.name,
+            'nickname': self.nickname,
+            'contacts': self.contacts,
+            'gender': self.email,
+            'registration_date': self.registration_date,
+        }

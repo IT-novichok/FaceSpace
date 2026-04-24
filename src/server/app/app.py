@@ -1,10 +1,9 @@
-from flask import Flask, url_for, render_template, redirect
+from flask import Flask, render_template, redirect, make_response, jsonify
 from flask_login import login_user, LoginManager, login_required, logout_user, current_user
 from forms import *
-from data import *
-from data import db_session
 from api import user_api
 from secrets import token_urlsafe
+from data import db, User, Advertisement
 
 host = '127.0.0.1'
 secret_key = token_urlsafe(32)
@@ -26,11 +25,19 @@ def categories(category):
 
 @app.route('/profile')
 def profile():
-    if not current_user:
+    if not current_user.is_authenticated:
         return redirect('/login')
     else:
-        return render_template('profile.html', title='Profile', profile={'name': 'username', 'nickname': 'User',
-                                                                         'about': 'There some info about user...'})
+        return render_template('profile.html', title='Profile', profile=current_user.get_profile())
+
+
+@app.route('/users/<string:name>')
+def get_user(name: str):
+    user = db.session.query(User).filter(User.name == name).one_or_none()
+    if not user:
+        return 404
+    else:
+        return render_template('profile.html', title='Profile', profile=user.get_profile())
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -41,12 +48,11 @@ def reqister():
             return render_template('register.html', title='Register Form',
                                    form=form,
                                    message="The passwords don't match!")
-        session = db_session.create_session()
         if not form.name.data.replace('_', '').isalnum():
             return render_template('register.html', title='Register From',
                                    form=form,
                                    message="The name should contain Latin letters in any case, numbers and the _ symbol")
-        elif session.query(User).filter(User.email == form.email.data).first():
+        elif db.session.query(User).filter(User.email == form.email.data).first():
             return render_template('register.html', title='Register From',
                                    form=form,
                                    message="This login already exists!")
@@ -59,24 +65,22 @@ def reqister():
             about=form.about.data,
         )
         user.set_password(form.password.data)
-        session.add(user)
-        session.commit()
+        db.session.add(user)
+        db.session.commit()
         return redirect('/')
     return render_template('register.html', title='Register Form', form=form)
 
 
 @login_manager.user_loader
 def load_user(user_id):
-    db_sess = db_session.create_session()
-    return db_sess.get(User, user_id)
+    return db.session.get(User, user_id)
 
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
     if form.validate_on_submit():
-        db_sess = db_session.create_session()
-        user = db_sess.query(User).filter(User.email == form.email.data).first()
+        user = db.session.query(User).filter(User.email == form.email.data).first()
         if user and user.check_password(form.password.data):
             login_user(user, remember=form.remember_me.data)
             return redirect("/")
@@ -86,10 +90,20 @@ def login():
     return render_template('login.html', title='Log in', form=form)
 
 
+@app.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    return redirect("/")
+
+
 def init():
     app.config['SECRET_KEY'] = secret_key
     login_manager.init_app(app)
-    db_session.global_init('database/global_data.db')
+    app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///../data/db/global_data.db"
+    db.init_app(app)
+    with app.app_context():
+        db.create_all()
     app.register_blueprint(user_api.blueprint)
 
 
@@ -100,10 +114,3 @@ def run():
 if __name__ == '__main__':
     init()
     run()
-
-
-@app.route('/logout')
-@login_required
-def logout():
-    logout_user()
-    return redirect("/")
