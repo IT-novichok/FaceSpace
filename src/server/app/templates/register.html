@@ -7,7 +7,7 @@
             <div class="text-center">
                 <h1>Registration</h1>
                 <h5>Already have an account?
-                <a href="/login">Log in</a> now!</h5>
+                    <a href="/login">Log in</a> now!</h5>
 
             </div>
             {{form.hidden_tag() }}
@@ -75,7 +75,7 @@
             {% endfor %}
             </p>
             <p>{{form.submit(type="submit", class="btn btn-primary") }}</p>
-            <div>{{ message }}</div>
+            <h5 class="critical">{{ message }}</h5>
         </form>
     </div>
 

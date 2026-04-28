@@ -15,6 +15,7 @@
     --text-color: #202020;
     --text-on-bg-color: #707070;
     --text-on-mg-color: #666666;
+    --text-info-color:#666666;
     --text-on-accent-color: #ffffff;
     /* Sizes */
     --container-padding: 30px;
@@ -28,8 +29,8 @@
     --button-font-size: 18px;
     --button-border-radius: 16px;
     --gap: 20px;
-    --card-width: 180px;
-    --card-height: 240px;
+    --card-width: 240px;
+    --card-height: 320px;
     --card-cover-width: 160px;
     --card-cover-height: 160px;
     --box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
@@ -98,7 +99,6 @@ header {
     color: var(--text-color);
     background-color: var(--fg-color);
     display: flex;
-    flex: 0 10% 0;
     flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;
@@ -153,7 +153,10 @@ a:hover {
 .column > * {
     margin-top: var(--gap);
 }
+.flexible{
+   flex:1;
 
+}
 .horz-center {
     display: flex;
     align-items: center;
@@ -196,23 +199,32 @@ a:hover {
 .text-right {
     text-align: right;
 }
-
-input {
+.wide {
+    width: 100%;
+}
+.info{
+    color:var(--text-info-color);
+}
+.critical{
+    color:red;
+}
+input, textarea {
     scale: 100%;
     width: 100%;
+    max-width:100%;
     padding: var(--field-padding);
     color: var(--text-on-bg-color);
     background-color: var(--bg-color);
     margin: 8px 0;
     border: none;
     border-radius: var(--field-border-radius);
-    font-size: 16px;
+    font-size: var(--text-normal-size);
     box-sizing: border-box;
     outline: none;
     accent-color: var(--accent-color);
 }
 
-input:focus {
+input:focus, textarea:focus {
     background-color: var(--light-accent-color);
     color: var(--text-on-accent-color);
 }
@@ -329,7 +341,26 @@ button:active {
 .search-btn:active {
     scale: 100%;
 }
+.like-btn{
+    background-color:transparent;
+    width: calc(2 * var(--icon-size));
+    height: calc(2 * var(--icon-size));
+    padding:0;
+    border-radius: var(--rounded-border-radius);
+}
+.like-btn > img {
+    width: calc(2 * var(--icon-size));
+    height: calc(2 * var(--icon-size));
+}
+.like-btn:hover {
+    scale: 120%;
+    background-color:transparent;
+}
 
+.like-btn:active {
+    scale: 80%;
+    background-color:transparent;
+}
 .card-gridview {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(var(--card-width), 1fr));
@@ -346,8 +377,6 @@ button:active {
 .card {
     padding: var(--container-padding);
     border-radius: var(--box-border-radius);
-    width: var(--card-width);
-    height: var(--card-height);
     background-color: var(--fg-color);
     color: var(--text-color);
     overflow: hidden;
@@ -378,7 +407,6 @@ button:active {
     background-color: var(--fg-color);
     padding: var(--container-padding);
     border-radius: var(--box-border-radius);
-
 }
 
 .stand {

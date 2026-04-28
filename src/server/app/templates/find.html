@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="center">
+        <div class="box central-view">
+            <div class="text-center">
+                <h1>Find</h1>
+            </div>
+            <form action="" method="post">
+                {{ form.hidden_tag() }}
+                <p>
+                    {{ form.title.label }}<br>
+                    {{ form.title(class="form-control") }}<br>
+                    {% for error in form.title.errors %}
+                        <div class="alert alert-danger" role="alert">
+                            {{ error }}
+                        </div>
+                    {% endfor %}
+                </p>
+                <p>
+                    {{ form.cover.label }}<br>
+                    {{ form.cover(class="form-control") }}<br>
+                    {% for error in form.cover.errors %}
+                        <div class="alert alert-danger" role="alert">
+                            {{ error }}
+                        </div>
+                    {% endfor %}
+                </p>
+                <p>
+                    {{ form.content.label }}<br>
+                    {{ form.content(class="form-control") }}<br>
+                    {% for error in form.content.errors %}
+                        <div class="alert alert-danger" role="alert">
+                            {{ error }}
+                        </div>
+                    {% endfor %}
+                </p>
+                <p>
+                    {{ form.category.label }}<br>
+                    {{ form.category(class="form-control") }}<br>
+                    {% for error in form.category.errors %}
+                        <div class="alert alert-danger" role="alert">
+                            {{ error }}
+                        </div>
+                    {% endfor %}
+                </p>
+                <p>
+                    {{ form.tags.label }}<br>
+                    {{ form.tags(class="form-control") }}<br>
+                    {% for error in form.tags.errors %}
+                        <div class="alert alert-danger" role="alert">
+                            {{ error }}
+                        </div>
+                    {% endfor %}
+                </p>
+                <p>{{ form.submit(type="submit", class="btn btn-primary") }}</p>
+                <h5 class="critical">{{ message }}</h5>
+            </form>
+        </div>
+
+    </div>
+
+{% endblock %}
