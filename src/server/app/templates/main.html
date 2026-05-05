@@ -9,26 +9,26 @@
     </div>
     <nav class="tab-bar">
         {% for category in categories %}
-            {% if category == selected_category %}
-            <a href="/categories/{{ category }}" class="tab selected">{{ category.capitalize()}}</a>
+            {% if category.name == selected_category %}
+                <a href="/categories/{{ category.name }}" class="tab selected">{{ category.name.capitalize() }}</a>
             {% else %}
-            <a href="/categories/{{ category }}" class="tab">{{ category.capitalize()}}</a>
-            {%  endif %}
+                <a href="/categories/{{ category.name }}" class="tab">{{ category.name.capitalize() }}</a>
+            {% endif %}
         {% endfor %}
     </nav>
-    <h1>{{'Category: ' + selected_category.capitalize() if selected_category else 'All advertisments' }}</h1>
+    <h1>{{ 'Category: ' + selected_category.name.capitalize() if selected_category else 'All advertisments' }}</h1>
     <div class="card-gridview">
         {% for advertisement in advertisements %}
             <div class="card">
-                <a>
+                <a href="/advertisements/{{ advertisement.id }}">
                     <div class="center">
-                        <img class='card-cover'>
+                        <img class='card-cover' src="{{ advertisement.cover }}">
                     </div>
-                    <h5>advertisement.title</h5>
+                    <h5>{{ advertisement.title }}</h5>
                 </a>
-                <a class="vert-center"><img class="avatar-small">advertisement.user.nickname</a>
+                <a class="vert-center" href="/users/{{ advertisement.publisher.name }}"><img
+                        class="avatar-small">{{ advertisement.publisher.nickname }}</a>
             </div>
         {% endfor %}
     </div>
-
 {% endblock %}

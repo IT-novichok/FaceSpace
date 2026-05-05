@@ -1,68 +1,65 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="stand">
-    <div class="banner">
+    <div class="stand">
+        <div class="banner">
 
-    </div>
-    <div class="column">
-        <div class="row">
-            <div class="horz-center column">
-                <img class="avatar-big">
-                <h3>{{ profile['nickname'] }}</h3>
-                <h5><a href="/users/{{ profile['name'] }}" class="tag">@{{ profile['name'] }}</a></h5>
-                <button class="like-btn"><img src="{{url_for('static',filename='img/icons/like.svg')}}"></button>
-            </div>
-            <div class="column">
-                <div class="box flexible">
-                    <h4 class="text-center">About</h4>
-                    {% if profile['about'] %}
-                    {{ profile['about'] }}
-                    {% else %}
-                    <div class="info text-center">There are nothing to show</div>
-                    {% endif %}
-                </div>
-                <div class="box flexible">
-                    <h4 class="text-center">Contacts</h4>
-                    {% if profile['contacts'] %}
-                    {% for contact, value in profile['contacts'].items() %}
-                    {{contact + ':' + value}}
-                    {% endfor %}
-                    {% else %}
-                    <div class="info text-center">There are nothing to show</div>
-                    {% endif %}
-                </div>
-                {% if profile['id'] == current_user.id %}
-                <a href="/profile/edit">
-                    <button class="wide">Edit</button>
-                </a>
-                {% else %}
-                <button class="wide">Subscribe</button>
-                {% endif %}
-            </div>
         </div>
-        <h3>All adverisments</h3>
-        <div class="card-gridview">
-            {% for i in range(4) %}
-            <div class="card">
-                <a>
-                    <div class="center">
-                        <img class='card-cover'>
+        <div class="column">
+            <div class="row">
+                <div class="horz-center column">
+                    <img class="avatar-big">
+                    <h3>{{ user.nickname }}</h3>
+                    <h5><a href="/users/{{ user.name }}" class="tag">@{{ user.name }}</a></h5>
+                    <button class="like-btn"><img src="{{ url_for('static',filename='img/icons/like.svg') }}"></button>
+                </div>
+                <div class="column">
+                    <div class="box flexible">
+                        <h4 class="text-center">About</h4>
+                        {% if user.about %}
+                            {{ user.about }}
+                        {% else %}
+                            <div class="info text-center">There are nothing to show</div>
+                        {% endif %}
                     </div>
-                    <h5>Card {{ i + 1 }}</h5>
-                </a>
-                <div>Description</div>
-                <a class="vert-center"><img class="avatar-small">Profile</a>
+                    <div class="box flexible">
+                        <h4 class="text-center">Contacts</h4>
+                        {% if user.contacts %}
+                            {% for contact, value in user.contacts.items() %}
+                                {{ contact + ':' + value }}
+                            {% endfor %}
+                        {% else %}
+                            <div class="info text-center">There are nothing to show</div>
+                        {% endif %}
+                    </div>
+                    {% if user.id == current_user.id %}
+                        <a href="/profile/edit">
+                            <button class="wide">Edit</button>
+                        </a>
+                    {% else %}
+                        <button class="wide">Follow</button>
+                    {% endif %}
+                </div>
             </div>
-            {% endfor %}
+            <h3>All advertisements</h3>
+            <div class="card-gridview">
+                {% for advertisement in user.advertisements %}
+                    <div class="card">
+                        <a href="/advertisements/{{ advertisement.id }}">
+                            <div class="center">
+                                <img class='card-cover' src="{{ advertisement.cover }}">
+                            </div>
+                            <h5>{{ advertisement.title }}</h5>
+                        </a>
+                        <a class=" vert-center" href="/users/{{ advertisement.publisher.name }}"><img
+                                class="avatar-small">
+                            {{ advertisement.publisher.nickname }}</a>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="banner">
         </div>
     </div>
-
-    <div class="banner">
-
-    </div>
-
-
-</div>
 
 {% endblock %}

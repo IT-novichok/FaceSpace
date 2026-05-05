@@ -1,5 +1,6 @@
 from datetime import datetime
 import sqlalchemy
+from sqlalchemy import orm
 from flask_login import UserMixin
 from ..database import db
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -14,13 +15,14 @@ class User(db.Model, UserMixin):
     nickname = sqlalchemy.Column(sqlalchemy.String, unique=True, nullable=False)
     email = sqlalchemy.Column(sqlalchemy.String, unique=True, nullable=False)
     password = sqlalchemy.Column(sqlalchemy.String, nullable=False)
-    avatar = sqlalchemy.Column(sqlalchemy.String, nullable=True)
+    avatar = sqlalchemy.Column(sqlalchemy.BLOB, nullable=True)
     gender = sqlalchemy.Column(sqlalchemy.String, nullable=False)
     birth_date = sqlalchemy.Column(sqlalchemy.DateTime, nullable=True)
     about = sqlalchemy.Column(sqlalchemy.String, nullable=True)
-    contacts = sqlalchemy.Column(sqlalchemy.String, nullable=True)
+    contacts = sqlalchemy.Column(sqlalchemy.JSON, nullable=True)
     registration_date = sqlalchemy.Column(sqlalchemy.DateTime, nullable=True, default=datetime.now())
-
+    banned = sqlalchemy.Column(sqlalchemy.Boolean, nullable=False, default=False)
+    advertisements = orm.relationship('Advertisement', back_populates='publisher')
     def set_password(self, password):
         self.password = generate_password_hash(password)
 
@@ -29,10 +31,13 @@ class User(db.Model, UserMixin):
 
     def get_profile(self):
         return {
-            'id': self.id,
+            'id': str(self.id),
             'name': self.name,
             'nickname': self.nickname,
+            'about': self.about,
             'contacts': self.contacts,
-            'gender': self.email,
-            'registration_date': self.registration_date,
+            'email': self.email,
+            'avatar': self.avatar,
+            'gender': self.gender,
+            'birth_date': self.birth_date,
         }

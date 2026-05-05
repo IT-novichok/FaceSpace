@@ -9,14 +9,14 @@ class Advertisement(db.Model):
 
     id = sqlalchemy.Column(sqlalchemy.Integer,
                            primary_key=True, autoincrement=True)
-    publisher = sqlalchemy.Column(sqlalchemy.Integer,
-                                  sqlalchemy.ForeignKey("users.id"))
+    publisher_id = sqlalchemy.Column(sqlalchemy.Integer,
+                                     sqlalchemy.ForeignKey("users.id"))
+    cover = sqlalchemy.Column(sqlalchemy.String, nullable=True)
     title = sqlalchemy.Column(sqlalchemy.String, nullable=True)
     content = sqlalchemy.Column(sqlalchemy.String, nullable=True)
-    tags = sqlalchemy.Column(sqlalchemy.String, nullable=True)
-    category = sqlalchemy.Column(sqlalchemy.Integer, sqlalchemy.ForeignKey("categories.id"))
-    responders = sqlalchemy.Column(sqlalchemy.String, nullable=True)
+    category_id = sqlalchemy.Column(sqlalchemy.Integer, sqlalchemy.ForeignKey("categories.id"))
     popularity = sqlalchemy.Column(sqlalchemy.Float, nullable=True)
     publication_date = sqlalchemy.Column(sqlalchemy.DateTime, nullable=True, default=datetime.now())
     banned = sqlalchemy.Column(sqlalchemy.Boolean, default=False)
-    user = orm.relationship('User')
+    publisher = orm.relationship('User', back_populates='advertisements')
+    category = orm.relationship('Category', back_populates='advertisements')

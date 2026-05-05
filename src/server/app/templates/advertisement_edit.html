@@ -4,15 +4,15 @@
     <div class="center">
         <div class="box central-view">
             <div class="text-center">
-                <h1>Find</h1>
+                <h1>Edit advertisement</h1>
             </div>
             <form action="" method="post">
                 {{ form.hidden_tag() }}
                 <p>
                     {{ form.cover.label }}<br>
-                    <img id="preview" src="#" class="cover">
                     {{ form.cover_data(class="form-control") }}
-                    {{ form.cover(class="form-control", accept="image/*") }}<br>
+                    <img src="{{ form.cover_data.data[0] }}" id="preview" class="cover">
+                    {{ form.cover(class="form-control") }}<br>
                     {% for error in form.cover.errors %}
                         <div class="alert alert-danger" role="alert">
                             {{ error }}
@@ -29,7 +29,8 @@
                             const reader = new FileReader();
                             reader.onload = function (event) {
                                 imageData.value = event.target.result
-                                console.log('Результат (DataURL):', event.target.result);;
+                                console.log('Результат (DataURL):', event.target.result);
+                                ;
                             };
                             reader.readAsDataURL(file)
                             preview.src = imgUrl;

@@ -5,6 +5,8 @@
     /* Colors */
     --accent-color: #0099ff;
     --light-accent-color: #aaddff;
+    --critical-color: #ff0000;
+    --light-critical-color: #ff7e7e;
     /* foreground color */
     --fg-color: #ffffff;
     /* middleground color */
@@ -15,8 +17,9 @@
     --text-color: #202020;
     --text-on-bg-color: #707070;
     --text-on-mg-color: #666666;
-    --text-info-color:#666666;
+    --text-info-color: #666666;
     --text-on-accent-color: #ffffff;
+    --text-on-critical-color:#ffffff;
     /* Sizes */
     --container-padding: 30px;
     --normal-font-size: 16px;
@@ -39,6 +42,7 @@
     --avatar-big-size: 256px;
     --logo-big-size: 96px;
     --logo-small-size: 48px;
+    --cover-size:512px;
 }
 
 /* Global settings */
@@ -153,10 +157,11 @@ a:hover {
 .column > * {
     margin-top: var(--gap);
 }
-.flexible{
-   flex:1;
 
+.flexible {
+    flex: 1;
 }
+
 .horz-center {
     display: flex;
     align-items: center;
@@ -199,19 +204,25 @@ a:hover {
 .text-right {
     text-align: right;
 }
+
 .wide {
     width: 100%;
 }
-.info{
-    color:var(--text-info-color);
+
+.info {
+    color: var(--text-info-color);
 }
-.critical{
-    color:red;
+
+.critical {
+    color: var(--critical-color);
 }
+
 input, textarea {
     scale: 100%;
     width: 100%;
-    max-width:100%;
+    height: auto;
+    max-width: 100%;
+    min-width: 100%;
     padding: var(--field-padding);
     color: var(--text-on-bg-color);
     background-color: var(--bg-color);
@@ -251,6 +262,29 @@ input[type="submit"]:active {
     scale: 95%;
     background-color: var(--accent-color);
 }
+input[type="file"] {
+    background-color: transparent;
+    padding: 0;
+}
+input[type="file"]::file-selector-button {
+    background-color: var(--accent-color);
+    padding: var(--button-padding);
+    color: var(--text-on-accent-color);
+    border-radius: var(--button-border-radius);
+    appearance: none;
+    border: none;
+    cursor: pointer;
+    transition: 0.4s;
+}
+input[type="file"]::file-selector-button:hover {
+    text: '100';
+    scale:105%;
+    background-color: var(--light-accent-color);
+}
+input[type='file']::file-selector-button:active{
+    scale: 95%;
+    background-color: var(--accent-color);
+}
 
 input[type='search'] {
     padding: var(--field-padding);
@@ -261,7 +295,9 @@ input[type='search'] {
 }
 
 select {
-    padding: 4px 8px;
+    background-color: var(--mg-color);
+    padding: var(--button-padding);
+    font-size: var(--normal-font-size);
     border: none;
     border-radius: var(--field-border-radius);
     appearance: none;
@@ -269,11 +305,7 @@ select {
 }
 
 select::picker {
-    padding: var(--container-padding);
-    background-color: var(--fg-color);
-    border: none;
-    border-bottom-left-radius: var(--box-border-radius);
-    border-bottom-right-radius: var(--button-border-radius);
+
 }
 
 button {
@@ -298,7 +330,16 @@ button:active {
     color: var(--text-on-accent-color);
     background-color: var(--accent-color);
 }
-
+button.critical {
+    background-color: var(--critical-color);
+    color:var(--text-on-critical-color);
+}
+button.critical:hover {
+    background-color: var(--light-critical-color);
+}
+button.critical:active{
+    background-color: var(--critical-color);
+}
 .img-btn {
     width: calc(2 * var(--image-button-padding) + var(--icon-size));
     height: calc(2 * var(--image-button-padding) + var(--icon-size));
@@ -341,26 +382,30 @@ button:active {
 .search-btn:active {
     scale: 100%;
 }
-.like-btn{
-    background-color:transparent;
+
+.like-btn {
+    background-color: transparent;
     width: calc(2 * var(--icon-size));
     height: calc(2 * var(--icon-size));
-    padding:0;
+    padding: 0;
     border-radius: var(--rounded-border-radius);
 }
+
 .like-btn > img {
     width: calc(2 * var(--icon-size));
     height: calc(2 * var(--icon-size));
 }
+
 .like-btn:hover {
     scale: 120%;
-    background-color:transparent;
+    background-color: transparent;
 }
 
 .like-btn:active {
     scale: 80%;
-    background-color:transparent;
+    background-color: transparent;
 }
+
 .card-gridview {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(var(--card-width), 1fr));
@@ -407,6 +452,7 @@ button:active {
     background-color: var(--fg-color);
     padding: var(--container-padding);
     border-radius: var(--box-border-radius);
+
 }
 
 .stand {
@@ -505,4 +551,9 @@ button:active {
     width: var(--logo-small-size);
     background-color: white;
     border-radius: var(--rounded-border-radius);
+}
+.cover{
+    width: var(--cover-size);
+    height: var(--cover-size);
+
 }
