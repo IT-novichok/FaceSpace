@@ -2,11 +2,12 @@ from datetime import datetime
 import sqlalchemy
 from sqlalchemy import orm
 from flask_login import UserMixin
+from sqlalchemy_serializer import SerializerMixin
 from ..database import db
 from werkzeug.security import generate_password_hash, check_password_hash
 
 
-class User(db.Model, UserMixin):
+class User(db.Model, UserMixin, SerializerMixin):
     __tablename__ = 'users'
 
     id = sqlalchemy.Column(sqlalchemy.Integer,
@@ -23,6 +24,8 @@ class User(db.Model, UserMixin):
     registration_date = sqlalchemy.Column(sqlalchemy.DateTime, nullable=True, default=datetime.now())
     banned = sqlalchemy.Column(sqlalchemy.Boolean, nullable=False, default=False)
     advertisements = orm.relationship('Advertisement', back_populates='publisher')
+    #actions = orm.relationship('Action', back_populates='subject')
+
     def set_password(self, password):
         self.password = generate_password_hash(password)
 

@@ -4,7 +4,7 @@ from .forms import *
 from .api import user_api
 from secrets import token_urlsafe
 from .data import db, User, Advertisement, Category
-from .services import user_service, advertisement_service, category_service
+from .services import user_service, advertisement_service, category_service, action_service
 from .errors import DataFormatError
 
 host = '127.0.0.1'
@@ -108,6 +108,8 @@ def advertisements(id: int):
     if not advertisement:
         return abort(404)
     else:
+        if current_user.is_authenticated:
+            action_service.view_advertisement(current_user.id, advertisement.id)
         return render_template('advertisement.html', title=advertisement.title, advertisement=advertisement, similar=[])
 
 
@@ -122,6 +124,17 @@ def delete_advertisement(id: int):
     else:
         advertisement_service.delete_advertisement(id)
         return redirect('/')
+
+
+@app.route('/advertisements/<int:id>/like')
+def like_advertisement(id: int):
+    if not current_user.is_authenticated:
+        return redirect('/login')
+    advertisement = advertisement_service.get_advertisement(id)
+    if not advertisement:
+        return abort(404)
+    action_service.like_advertisement(current_user.id, advertisement.id)
+    return redirect(f'/advertisements/{id}')
 
 
 @app.route('/register', methods=['GET', 'POST'])

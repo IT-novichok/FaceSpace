@@ -16,7 +16,8 @@ def get_user(user_id: int):
     if user is None:
         return make_response(jsonify({'message': 'User not found!'}), 404)
     else:
-        return make_response(jsonify(user.get_profile()), 200)
+        return make_response(jsonify(user.to_dict(
+            only=('id', 'name', 'nickname', 'about', 'contacts', 'email', 'avatar', 'gender', 'birth date'))), 200)
 
 
 @blueprint.route('/api/user', methods=['POST'])

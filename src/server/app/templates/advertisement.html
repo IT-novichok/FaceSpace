@@ -1,63 +1,70 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <div class="stand">
-        <div class="banner">
+<div class="stand">
+    <div class="banner">
 
-        </div>
-        <div class="horz-center column">
-            <img class="cover" src="{{ advertisement.cover }}">
-            <h3>{{ advertisement.title }}</h3>
-            <div class="row">
-                <h5>
-                    <a class="vert-center" href="/users/{{ advertisement.publisher.name }}">
-                        <img class="avatar-small">{{ advertisement.publisher.nickname }}
-                    </a>
-                </h5>
-                <div class="flexible">
-                    <button class="like-btn"><img src="{{ url_for('static',filename='img/icons/like.svg') }}"></button>
-                </div>
-            </div>
-            {% if current_user.id == advertisement.publisher.id %}
-                <dev class="row wide">
-                    <a href='/advertisements/{{ advertisement.id }}/edit'>
-                        <button class="wide">Edit</button>
-                    </a>
-                    <a href='/advertisements/{{ advertisement.id }}/delete'>
-                        <button class="critical wide">Delete</button>
-                    </a>
-                </dev>
-            {% else %}
-                <button class="wide">Respond</button>
-            {% endif %}
-            <div class="box wide">
-                {% if advertisement.content %}
-                    {{ advertisement.content }}
-                {% else %}
-                    There are nothing to show
-                {% endif %}
-            </div>
-            {% if similar %}
-                <h3>Similar advertisements</h3>
-                <div class="card-gridview">
-                    {% for ad in similar %}
-                        <div class="card">
-                            <a href="/advertisements/{{ ad.id }}">
-                                <div class="center">
-                                    <img class='card-cover'>
-                                </div>
-                                <h5>{{ ad.title }}</h5>
-                            </a>
-                            <a class="vert-center" href="/users/{{ ad.publisher.    name }}"><img
-                                    class="avatar-small">{{ ad.publisher.nickname }}</a>
-                        </div>
-                    {% endfor %}
-                </div>
-            {% endif %}
-        </div>
-        <div class="banner">
-        </div>
     </div>
+    <div class="horz-center column">
+        <img class="cover" src="{{ advertisement.cover }}">
+        <h3>{{ advertisement.title }}</h3>
+        <div class="row">
+            <h5>
+                <a class="vert-center" href="/users/{{ advertisement.publisher.name }}">
+                    <img class="avatar-small">{{ advertisement.publisher.nickname }}
+                </a>
+            </h5>
+            <div class="flexible">
+                <div>
+                    <button class="like-btn"><img src="{{ url_for('static',filename='img/icons/like.svg') }}"></button>
+                    {{len(advertisement.views)}}
+                </div>
+                <div>
+                    <img class="icon" src="{{ url_for('static',filename='img/icons/user.svg') }}">
+                    {{len(advertisement.views)}}
+                </div>
+            </div>
+        </div>
+        {% if current_user.id == advertisement.publisher.id %}
+        <dev class="row wide">
+            <a href='/advertisements/{{ advertisement.id }}/edit'>
+                <button class="wide">Edit</button>
+            </a>
+            <a href='/advertisements/{{ advertisement.id }}/delete'>
+                <button class="critical wide">Delete</button>
+            </a>
+        </dev>
+        {% else %}
+        <button class="wide">Respond</button>
+        {% endif %}
+        <div class="box wide">
+            {% if advertisement.content %}
+            {{ advertisement.content }}
+            {% else %}
+            There are nothing to show
+            {% endif %}
+        </div>
+        {% if similar %}
+        <h3>Similar advertisements</h3>
+        <div class="card-gridview">
+            {% for ad in similar %}
+            <div class="card">
+                <a href="/advertisements/{{ ad.id }}">
+                    <div class="center">
+                        <img class='card-cover'>
+                    </div>
+                    <h5>{{ ad.title }}</h5>
+                </a>
+                <a class="vert-center" href="/users/{{ ad.publisher.    name }}"><img
+                        class="avatar-small">{{ ad.publisher.nickname }}</a>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+    </div>
+    <div class="banner">
+    </div>
+</div>
 
 
 {% endblock %}

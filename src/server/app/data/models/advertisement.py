@@ -1,10 +1,12 @@
 from datetime import datetime
 import sqlalchemy
 from sqlalchemy import orm
+from sqlalchemy_serializer import SerializerMixin
+from .action import interactions_table
 from ..database import db
 
 
-class Advertisement(db.Model):
+class Advertisement(db.Model, SerializerMixin):
     __tablename__ = 'advertisements'
 
     id = sqlalchemy.Column(sqlalchemy.Integer,
@@ -20,3 +22,5 @@ class Advertisement(db.Model):
     banned = sqlalchemy.Column(sqlalchemy.Boolean, default=False)
     publisher = orm.relationship('User', back_populates='advertisements')
     category = orm.relationship('Category', back_populates='advertisements')
+    actions = orm.relationship('Action', secondary=interactions_table, back_populates='object')
+
