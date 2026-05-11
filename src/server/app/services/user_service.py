@@ -70,6 +70,7 @@ def update_user(id, data: dict[str, Any]):
         user.birth_date = data.get('birth_date') or user.birth_date
         user.avatar = data.get('avatar') or user.avatar
         db.session.commit()
+        return user
 
 
 def delete_user(id: int):

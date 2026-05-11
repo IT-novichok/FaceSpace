@@ -2,6 +2,7 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, TextAreaField, FileField, HiddenField
 from wtforms.fields.choices import SelectField
 from wtforms.validators import DataRequired
+from ..services import category_service
 
 
 class AdvertisementForm(FlaskForm):
@@ -12,7 +13,12 @@ class AdvertisementForm(FlaskForm):
     category = SelectField('Choose category')
     submit = SubmitField('Publish')
 
-    def __init__(self, categories, action='Publish'):
+    def __init__(self, action='Publish', advertisement=None):
         super().__init__()
-        self.category.choices = categories
+        self.category.choices = [category.name for category in category_service.get_all_categories()]
         self.submit.label.text = action
+        if advertisement:
+            self.cover_data.data = [advertisement.cover]
+            self.title.data = advertisement.title
+            self.content.data = advertisement.content
+            self.category.data = advertisement.category.name

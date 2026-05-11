@@ -5,10 +5,11 @@ from typing import Any
 
 
 def get_action(subject_id: int, object_id: int, type: str):
-    return db.session.query(Action).filter(Action.subject_id == subject_id, Action.object_id == object_id).first()
+    return db.session.query(Action).filter(Action.subject_id == subject_id, Action.object_id == object_id,
+                                           Action.type == type).first()
 
 
-def act(subject_id: int, object_id: int, type: str):
+def add_action(subject_id: int, object_id: int, type: str):
     subject = user_service.get_user(subject_id)
     if not subject:
         raise NotFoundError('Subject not found!')
@@ -21,19 +22,7 @@ def act(subject_id: int, object_id: int, type: str):
         type=type
     )
     db.session.add(action)
-    db.commit()
-
-
-def view_advertisement(subject_id: int, object_id: int):
-    view = get_action(subject_id, object_id, 'view')
-    if not view:
-        act(subject_id, object_id, 'view')
-
-
-def like_advertisement(subject_id: int, object_id: int):
-    like = get_action(subject_id, object_id, 'like')
-    if not like:
-        act(subject_id, object_id, 'like')
+    db.session.commit()
 
 
 def delete_action(subject_id: int, object_id: int, type: str):
@@ -42,13 +31,30 @@ def delete_action(subject_id: int, object_id: int, type: str):
         raise NotFoundError('Action not found!')
     else:
         db.session.delete(action)
-        db.commit()
+        db.session.commit()
 
 
-def delete_like(subject_id: int, object_id: int):
-    action = get_action(subject_id, object_id, 'like')
-    if not action:
-        raise NotFoundError('Action not found!')
-    else:
-        db.session.delete(action)
-        db.commit()
+def view(subject_id: int, object_id: int):
+    view = get_action(subject_id, object_id, 'view')
+    if not view:
+        add_action(subject_id, object_id, 'view')
+
+
+def like(subject_id: int, object_id: int):
+    like = get_action(subject_id, object_id, 'like')
+    if not like:
+        add_action(subject_id, object_id, 'like')
+
+
+def respond(subject_id: int, object_id: int):
+    response = get_action(subject_id, object_id, 'respond')
+    if not response:
+        add_action(subject_id, object_id, 'respond')
+
+
+def unlike(subject_id: int, object_id: int):
+    delete_action(subject_id, object_id, 'like')
+
+
+def unrespond(subject_id: int, object_id: int):
+    delete_action(subject_id, object_id, 'respond')

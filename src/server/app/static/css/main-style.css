@@ -3,7 +3,7 @@
 /* Global variables */
 * {
     /* Colors */
-    --accent-color: #0099ff;
+    --accent-color: #36A9E1;
     --light-accent-color: #aaddff;
     --critical-color: #ff0000;
     --light-critical-color: #ff7e7e;
@@ -229,7 +229,7 @@ input, textarea {
     margin: 8px 0;
     border: none;
     border-radius: var(--field-border-radius);
-    font-size: var(--text-normal-size);
+    font-size: var(--normal-font-size);
     box-sizing: border-box;
     outline: none;
     accent-color: var(--accent-color);
@@ -302,10 +302,6 @@ select {
     border-radius: var(--field-border-radius);
     appearance: none;
     outline: none;
-}
-
-select::picker {
-
 }
 
 button {
@@ -383,25 +379,20 @@ button.critical:active{
     scale: 100%;
 }
 
-.like-btn {
+.icon-btn {
     background-color: transparent;
-    width: calc(2 * var(--icon-size));
-    height: calc(2 * var(--icon-size));
+    width: auto;
+    height: auto;
     padding: 0;
     border-radius: var(--rounded-border-radius);
 }
 
-.like-btn > img {
-    width: calc(2 * var(--icon-size));
-    height: calc(2 * var(--icon-size));
-}
-
-.like-btn:hover {
+.icon-btn:hover {
     scale: 120%;
     background-color: transparent;
 }
 
-.like-btn:active {
+.icon-btn:active {
     scale: 80%;
     background-color: transparent;
 }
@@ -445,7 +436,7 @@ button.critical:active{
 }
 
 .container {
-    padding: 1%;
+    padding:var(--container-padding);
 }
 
 .box {
@@ -542,7 +533,10 @@ button.critical:active{
 .tag:hover {
     color: var(--light-accent-color);
 }
-
+.icon{
+    width: var(--icon-size);
+    height: var(--icon-sizes);
+}
 .logo-big {
     width: var(--logo-big-size);
 }

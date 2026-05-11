@@ -1,15 +1,8 @@
 from datetime import datetime
 import sqlalchemy
-from sqlalchemy import orm, Table, Column, ForeignKey, Integer
-
+from sqlalchemy import Table, Column, ForeignKey, Integer
+from sqlalchemy.orm import relationship
 from ..database import db
-
-interactions_table = Table(
-    "interactons",
-    db.metadata,
-    Column("subject_id", ForeignKey("users.id"), primary_key=True),
-    Column("object_id", ForeignKey("advertisements.id"), primary_key=True),
-)
 
 
 class Action(db.Model):
@@ -17,7 +10,9 @@ class Action(db.Model):
 
     id = Column(Integer,
                 primary_key=True, autoincrement=True)
+    subject_id = Column(Integer, ForeignKey('users.id'))
+    object_id = Column(Integer, ForeignKey('advertisements.id'))
     type = Column(sqlalchemy.String, nullable=False)
     params = Column(sqlalchemy.JSON)
-    subject = orm.relationship('User',secondary=interactions_table, back_populates='advertisements')
-    object = orm.relationship('Advertisement',secondary=interactions_table, back_populates='advertisements')
+    subject = relationship('User', back_populates='actions')
+    object = relationship('Advertisement', back_populates='actions')

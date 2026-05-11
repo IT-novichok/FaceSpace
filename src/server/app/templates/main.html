@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-
+{% import "card.html" as card%}
 {% block content %}
     <div class="search-bar">
         <a>
@@ -19,16 +19,7 @@
     <h1>{{ 'Category: ' + selected_category.name.capitalize() if selected_category else 'All advertisments' }}</h1>
     <div class="card-gridview">
         {% for advertisement in advertisements %}
-            <div class="card">
-                <a href="/advertisements/{{ advertisement.id }}">
-                    <div class="center">
-                        <img class='card-cover' src="{{ advertisement.cover }}">
-                    </div>
-                    <h5>{{ advertisement.title }}</h5>
-                </a>
-                <a class="vert-center" href="/users/{{ advertisement.publisher.name }}"><img
-                        class="avatar-small">{{ advertisement.publisher.nickname }}</a>
-            </div>
+            {{ card.show(advertisement) }}
         {% endfor %}
     </div>
 {% endblock %}

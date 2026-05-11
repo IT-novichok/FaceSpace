@@ -24,23 +24,16 @@ class User(db.Model, UserMixin, SerializerMixin):
     registration_date = sqlalchemy.Column(sqlalchemy.DateTime, nullable=True, default=datetime.now())
     banned = sqlalchemy.Column(sqlalchemy.Boolean, nullable=False, default=False)
     advertisements = orm.relationship('Advertisement', back_populates='publisher')
-    #actions = orm.relationship('Action', back_populates='subject')
+    actions = orm.relationship('Action', back_populates='subject')
+    likes = orm.relationship('Action', primaryjoin='and_(User.id == Action.subject_id, Action.type=="like")',
+                             back_populates='subject')
+    views = orm.relationship('Action', primaryjoin='and_(User.id == Action.subject_id, Action.type=="view")',
+                             back_populates='subject')
+    responses = orm.relationship('Action', primaryjoin='and_(User.id == Action.subject_id, Action.type=="respond")',
+                                 back_populates='subject')
 
     def set_password(self, password):
         self.password = generate_password_hash(password)
 
     def check_password(self, password):
         return check_password_hash(self.password, password)
-
-    def get_profile(self):
-        return {
-            'id': str(self.id),
-            'name': self.name,
-            'nickname': self.nickname,
-            'about': self.about,
-            'contacts': self.contacts,
-            'email': self.email,
-            'avatar': self.avatar,
-            'gender': self.gender,
-            'birth_date': self.birth_date,
-        }

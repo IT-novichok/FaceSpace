@@ -1,8 +1,8 @@
 {% extends "base.html" %}
-
+{% import "card.html" as card%}
 {% block content %}
     <div class="stand">
-        <div class="banner">
+        <div class="column">
 
         </div>
         <div class="column">
@@ -11,7 +11,6 @@
                     <img class="avatar-big">
                     <h3>{{ user.nickname }}</h3>
                     <h5><a href="/users/{{ user.name }}" class="tag">@{{ user.name }}</a></h5>
-                    <button class="like-btn"><img src="{{ url_for('static',filename='img/icons/like.svg') }}"></button>
                 </div>
                 <div class="column">
                     <div class="box flexible">
@@ -36,29 +35,29 @@
                         <a href="/profile/edit">
                             <button class="wide">Edit</button>
                         </a>
-                    {% else %}
-                        <button class="wide">Follow</button>
                     {% endif %}
                 </div>
             </div>
-            <h3>All advertisements</h3>
-            <div class="card-gridview">
-                {% for advertisement in user.advertisements %}
-                    <div class="card">
-                        <a href="/advertisements/{{ advertisement.id }}">
-                            <div class="center">
-                                <img class='card-cover' src="{{ advertisement.cover }}">
-                            </div>
-                            <h5>{{ advertisement.title }}</h5>
-                        </a>
-                        <a class=" vert-center" href="/users/{{ advertisement.publisher.name }}"><img
-                                class="avatar-small">
-                            {{ advertisement.publisher.nickname }}</a>
-                    </div>
-                {% endfor %}
-            </div>
+            <h3 class="text-center">All advertisements</h3>
+            {%  if user.advertisements %}
+                <div class="card-gridview">
+                    {% for advertisement in user.advertisements %}
+                        {{ card.show(advertisement) }}
+                    {% endfor %}
+                </div>
+            {%  else %}
+                <h3 class="info text-center">There are nothing to show</h3>
+            {% endif %}
         </div>
-        <div class="banner">
+        <div class="column">
+            <div class="container column">
+                {% if current_user.id == user.id %}
+                    <h3 class="text-center">Responses</h3>
+                    {% for response in user.responses %}
+                        {{ card.show(response.object) }}
+                    {% endfor %}
+                {% endif %}
+            </div>
         </div>
     </div>
 
