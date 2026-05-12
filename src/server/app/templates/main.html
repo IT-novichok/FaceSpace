@@ -1,12 +1,10 @@
 {% extends "base.html" %}
 {% import "card.html" as card%}
 {% block content %}
-    <div class="search-bar">
-        <a>
-            <button class="search-btn"><img src="{{ url_for('static',filename='img/icons/search.svg') }}"></button>
-        </a>
-        <input type="search" placeholder="Search">
-    </div>
+    <form action="/search/" class="search-bar" method="get">
+        <button type="submit" class="search-btn"><img src="{{ url_for('static',filename='img/icons/search.svg') }}"></button>
+        <input type="search" placeholder="Search" name="text">
+    </form>
     <nav class="tab-bar">
         {% for category in categories %}
             {% if category.name == selected_category %}

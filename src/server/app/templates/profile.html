@@ -3,9 +3,6 @@
 {% block content %}
     <div class="stand">
         <div class="column">
-
-        </div>
-        <div class="column">
             <div class="row">
                 <div class="horz-center column">
                     <img class="avatar-big">
@@ -38,7 +35,7 @@
                     {% endif %}
                 </div>
             </div>
-            <h3 class="text-center">All advertisements</h3>
+            <h3 class="text-center">Advertisements</h3>
             {%  if user.advertisements %}
                 <div class="card-gridview">
                     {% for advertisement in user.advertisements %}

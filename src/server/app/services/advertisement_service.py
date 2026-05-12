@@ -14,7 +14,7 @@ def get_advertisement(id: int) -> Advertisement:
 
 
 def get_all_advertisements() -> list[Advertisement]:
-    return db.session.query(Advertisement).all()
+    return db.session.query(Advertisement).order_by(Advertisement.popularity.desc()).all()
 
 
 def create_advertisement(data: dict[str, Any]):

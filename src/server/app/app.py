@@ -4,7 +4,7 @@ from .forms import *
 from .api import user_api
 from secrets import token_urlsafe
 from .data import db, User, Advertisement, Category
-from .services import user_service, advertisement_service, category_service, action_service
+from .services import user_service, advertisement_service, category_service, action_service, search_service
 from .errors import DataFormatError
 from .utils import formatter
 
@@ -133,6 +133,15 @@ def delete_advertisement(id: int):
     else:
         advertisement_service.delete_advertisement(id)
         return redirect('/')
+
+
+@app.route('/search/', methods=['GET'])
+def search_advertisement():
+    text = request.args.get('text')
+    advertisements = search_service.search_advertisement(text)
+    categories = category_service.get_all_categories()
+    return render_template('main.html', title='FaceSpace', advertisements=advertisements, categories=categories,
+                           **utils)
 
 
 @app.route('/advertisements/<int:id>/like')

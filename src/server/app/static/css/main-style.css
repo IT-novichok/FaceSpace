@@ -42,7 +42,7 @@
     --avatar-big-size: 256px;
     --logo-big-size: 96px;
     --logo-small-size: 48px;
-    --cover-size:512px;
+    --cover-size:320px;
 }
 
 /* Global settings */
@@ -448,7 +448,7 @@ button.critical:active{
 
 .stand {
     display: grid;
-    grid-template-columns: 1fr 2fr 1fr;
+    grid-template-columns: 3fr 1fr;
     max-width: 100%;
 }
 
