@@ -25,7 +25,7 @@
     </nav>
     <div class="vert-center row">
         {% if current_user.is_authenticated %}
-            <img class="avatar-small">
+            <img class="avatar-small" src ={{ current_user.avatar }}>
             <a class="navbar-brand" href="/profile">{{ current_user.name }}</a>
             <a href="/settings">
                 <button class="img-btn">

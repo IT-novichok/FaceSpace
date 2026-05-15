@@ -3,7 +3,8 @@
 {% block content %}
     <div class="center">
         <div class="box">
-            <h1>Error: {{message}} ({{status_code}})</h1>
+            <img class="wide" src="{{ url_for('static',filename='img/logo.svg') }}">
+            <h1 class="critical">Error: {{message}} ({{status_code}})</h1>
         </div>
     </div>
 

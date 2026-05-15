@@ -1,11 +1,11 @@
 {% extends "base.html" %}
-{% import "card.html" as card%}
+{% import "card.html" as card %}
 {% block content %}
     <div class="stand">
         <div class="column">
             <div class="row">
                 <div class="horz-center column">
-                    <img class="avatar-big">
+                    <img class="avatar-big" src="{{ user.avatar }}">
                     <h3>{{ user.nickname }}</h3>
                     <h5><a href="/users/{{ user.name }}" class="tag">@{{ user.name }}</a></h5>
                 </div>
@@ -13,7 +13,7 @@
                     <div class="box flexible">
                         <h4 class="text-center">About</h4>
                         {% if user.about %}
-                            {{ user.about }}
+                            {{ user.about | replace('\n',' <br> ') | safe}}
                         {% else %}
                             <div class="info text-center">There are nothing to show</div>
                         {% endif %}
@@ -22,39 +22,39 @@
                         <h4 class="text-center">Contacts</h4>
                         {% if user.contacts %}
                             {% for contact, value in user.contacts.items() %}
-                                {{ contact + ':' + value }}
+                                {% if value %}
+                                    {{ contact.capitalize() }}: {{ value }}<br>
+                                {% endif %}
                             {% endfor %}
                         {% else %}
                             <div class="info text-center">There are nothing to show</div>
                         {% endif %}
                     </div>
                     {% if user.id == current_user.id %}
-                        <a href="/profile/edit">
+                        <a href="/settings#profile-settings">
                             <button class="wide">Edit</button>
                         </a>
                     {% endif %}
                 </div>
             </div>
             <h3 class="text-center">Advertisements</h3>
-            {%  if user.advertisements %}
+            {% if user.advertisements %}
                 <div class="card-gridview">
                     {% for advertisement in user.advertisements %}
                         {{ card.show(advertisement) }}
                     {% endfor %}
                 </div>
-            {%  else %}
+            {% else %}
                 <h3 class="info text-center">There are nothing to show</h3>
             {% endif %}
         </div>
         <div class="column">
-            <div class="container column">
-                {% if current_user.id == user.id %}
-                    <h3 class="text-center">Responses</h3>
-                    {% for response in user.responses %}
-                        {{ card.show(response.object) }}
-                    {% endfor %}
-                {% endif %}
-            </div>
+            {% if current_user.id == user.id %}
+                <h3 class="text-center">Responses</h3>
+                {% for response in user.responses %}
+                    {{ card.show(response.object) }}
+                {% endfor %}
+            {% endif %}
         </div>
     </div>
 

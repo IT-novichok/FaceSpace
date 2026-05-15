@@ -56,7 +56,7 @@ def create_user(data: dict[str, Any]):
 
 
 def update_user(id, data: dict[str, Any]):
-    user = db.session.get(User, id)
+    user = get_user(id)
     if not user:
         raise NotFoundError('User not found!')
     else:

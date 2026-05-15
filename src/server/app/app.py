@@ -1,5 +1,7 @@
 from flask import Flask, render_template, redirect, abort, jsonify, request
 from flask_login import login_user, LoginManager, login_required, logout_user, current_user
+
+from src.server.app.forms.settings_form import SettingsForm
 from .forms import *
 from .api import user_api
 from secrets import token_urlsafe
@@ -8,7 +10,7 @@ from .services import user_service, advertisement_service, category_service, act
 from .errors import DataFormatError
 from .utils import formatter
 
-host = '127.0.0.1'
+host = '0.0.0.0'
 secret_key = token_urlsafe(32)
 port = 8080
 utils = {
@@ -64,7 +66,7 @@ def find():
     if form.validate_on_submit():
         data = {
             'publisher_id': current_user.id,
-            'cover': form.cover_data.data,
+            'cover': form.cover.data,
             'title': form.title.data,
             'content': form.content.data,
             'category_id': category_service.get_category_by_name(form.category.data.lower()).id,
@@ -90,7 +92,7 @@ def advertisement_edit(id):
             form.validate()
             data = {
                 'publisher_id': current_user.id,
-                'cover': form.cover_data.data,
+                'cover': form.cover.data,
                 'title': form.title.data,
                 'content': form.content.data,
                 'category_id': category_service.get_category_by_name(form.category.data.lower()).id,
@@ -140,7 +142,7 @@ def search_advertisement():
     text = request.args.get('text')
     advertisements = search_service.search_advertisement(text)
     categories = category_service.get_all_categories()
-    return render_template('main.html', title='FaceSpace', advertisements=advertisements, categories=categories,
+    return render_template('main.html', title='Search', advertisements=advertisements, categories=categories,
                            **utils)
 
 
@@ -205,8 +207,7 @@ def reqister():
             'password': form.password.data,
         }
         try:
-            user = user_service.create_user(data)
-            login_user(user)
+            user_service.create_user(data)
         except DataFormatError as e:
             return render_template('register.html', title='Registration', form=form,
                                    message=str(e), **utils)
@@ -233,6 +234,36 @@ def login():
     return render_template('login.html', title='Log in', form=form, **utils)
 
 
+@app.route('/settings', methods=['GET', 'POST'])
+def settings():
+    if not current_user.is_authenticated:
+        return redirect('/login')
+
+    form = SettingsForm(current_user if request.method == 'GET' else None)
+    if form.validate_on_submit():
+        data = {
+            'name': form.name.data,
+            'nickname': form.nickname.data,
+            'email': form.email.data if form.email.data != current_user.email else None,
+            'birth_date': form.birth_date.data,
+            'gender': form.gender.data,
+            'password': form.password.data,
+            'about': form.about.data,
+            'avatar':form.avatar.data,
+            'contacts': {
+                'phone number': form.phone_number.data,
+                'website': form.website.data,
+                'socials': form.socials.data,
+            }
+        }
+        try:
+            user_service.update_user(current_user.id, data)
+        except DataFormatError as e:
+            return render_template('settings.html', title='Settings', form=form, message=str(e), **utils)
+        return redirect('/')
+    return render_template('settings.html', title='Settings', form=form, **utils)
+
+
 @app.errorhandler(404)
 def not_found(error):
     print(error)
@@ -242,6 +273,9 @@ def not_found(error):
 @app.errorhandler(403)
 def forbidden(error):
     return render_template('error.html', message='Forbidden', status_code=403), 403
+@app.errorhandler(500)
+def server_error(error):
+    return render_template('error.html', message='Server Error', status_code=500), 500
 
 
 @app.route('/logout')

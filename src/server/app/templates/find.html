@@ -10,14 +10,9 @@
                 {{ form.hidden_tag() }}
                 <p>
                     {{ form.cover.label }}<br>
-                    <img id="preview" src="#" class="cover">
-                    {{ form.cover_data(class="form-control") }}
-                    {{ form.cover(class="form-control", accept="image/*") }}<br>
-                    {% for error in form.cover.errors %}
-                        <div class="alert alert-danger" role="alert">
-                            {{ error }}
-                        </div>
-                    {% endfor %}
+                    {{ form.cover(class="form-control" ) }}
+                    <img src="{{form.cover.data or url_for('static',filename='/img/logo.svg')}}" id="preview" class="cover">
+                    <input id="image-input" type="file" accept="image"><br>
                 <script>
                     const imageInput = document.getElementById('image-input');
                     const imageData = document.getElementById('image-data');
@@ -29,7 +24,6 @@
                             const reader = new FileReader();
                             reader.onload = function (event) {
                                 imageData.value = event.target.result
-                                console.log('Результат (DataURL):', event.target.result);;
                             };
                             reader.readAsDataURL(file)
                             preview.src = imgUrl;

@@ -8,5 +8,4 @@ class Category(db.Model):
     id = sqlalchemy.Column(sqlalchemy.Integer,
                            primary_key=True, autoincrement=True)
     name = sqlalchemy.Column(sqlalchemy.String)
-    popularity = sqlalchemy.Column(sqlalchemy.Float, nullable=True)
     advertisements = orm.relationship('Advertisement', back_populates='category')

@@ -207,6 +207,7 @@ a:hover {
 
 .wide {
     width: 100%;
+    box-sizing: border-box;
 }
 
 .info {
@@ -449,6 +450,7 @@ button.critical:active{
 .stand {
     display: grid;
     grid-template-columns: 3fr 1fr;
+    gap: var(--gap);
     max-width: 100%;
 }
 
@@ -535,7 +537,7 @@ button.critical:active{
 }
 .icon{
     width: var(--icon-size);
-    height: var(--icon-sizes);
+    height: var(--icon-size);
 }
 .logo-big {
     width: var(--logo-big-size);
@@ -549,4 +551,5 @@ button.critical:active{
 .cover{
     width: var(--cover-size);
     height: var(--cover-size);
+    background-color: var(--mg-color);
 }

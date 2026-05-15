@@ -7,7 +7,7 @@
             <h5>{{ advertisement.title }}</h5>
         </a>
         <a class=" vert-center" href="/users/{{ advertisement.publisher.name }}"><img
-                class="avatar-small">
+                class="avatar-small" src="{{ advertisement.publisher.avatar }}">
             {{ advertisement.publisher.nickname }}</a>
     </div>
 {% endmacro %}

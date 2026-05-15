@@ -1,0 +1,148 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="center">
+        <div class="box central-view">
+            <form action="" method="post">
+                <h1 class="text-center">Settings</h1>
+                <h3>Personal settings</h3>
+                {{ form.hidden_tag() }}
+                <p>
+                    {{ form.name.label }}
+                    {{ form.name(class="form-control", type="text") }}<br>
+                    {% for error in form.name.errors %}
+                        <div class="alert alert-danger" role="alert">
+                            {{ error }}
+                        </div>
+                    {% endfor %}
+                </p>
+                <p>
+                    {{ form.nickname.label }}
+                    {{ form.nickname(class="form-control", type="text") }}<br>
+                    {% for error in form.nickname.errors %}
+                        <div class="alert alert-danger" role="alert">
+                            {{ error }}
+                        </div>
+                    {% endfor %}
+                </p>
+                <p>
+                    {{ form.email.label }}
+                    {{ form.email(class="form-control", type="email") }}<br>
+                    {% for error in form.email.errors %}
+                        <div class="alert alert-danger" role="alert">
+                            {{ error }}
+                        </div>
+                    {% endfor %}
+                </p>
+                <p>
+                    {{ form.password.label }}
+                    {{ form.password(class="form-control", type="password") }}<br>
+                    {% for error in form.password.errors %}
+                        <div class="alert alert-danger" role="alert">
+                            {{ error }}
+                        </div>
+                    {% endfor %}
+                </p>
+                <p>
+                    {{ form.password_again.label }}
+                    {{ form.password_again(class="form-control", type="password") }}<br>
+                    {% for error in form.password_again.errors %}
+                        <div class="alert alert-danger" role="alert">
+                            {{ error }}
+                        </div>
+                    {% endfor %}
+                </p>
+                <p>
+                    {{ form.birth_date.label }}
+                    {{ form.birth_date(class="form-control", type="date") }}<br>
+                    {% for error in form.birth_date.errors %}
+                        <div class="alert alert-danger" role="alert">
+                            {{ error }}
+                        </div>
+                    {% endfor %}
+                </p>
+                <p>
+                    {{ form.gender.label }}
+                    {{ form.gender(class="form-control") }}<br>
+                    {% for error in form.gender.errors %}
+                        <div class="alert alert-danger" role="alert">
+                            {{ error }}
+                        </div>
+                    {% endfor %}
+                </p>
+                <h3 id="profile-settings">Profile settings</h3>
+                <p>
+                    {{ form.avatar.label }}<br>
+                    {{ form.avatar(class="form-control", id='image-data') }}
+                    <img src="{{form.avatar.data}}" id="preview" class="avatar-big">
+                    <input id="image-input" type="file"><br>
+                    {% for error in form.avatar.errors %}
+                        <div class="alert alert-danger" role="alert">
+                            {{ error }}
+                        </div>
+                    {% endfor %}
+                <script>
+                    const imageInput = document.getElementById('image-input');
+                    const imageData = document.getElementById('image-data');
+                    const preview = document.getElementById('preview');
+                    imageInput.addEventListener('change', function () {
+                        const file = this.files[0];
+                        if (file) {
+                            const imgUrl = URL.createObjectURL(file);
+                            const reader = new FileReader();
+                            reader.onload = function (event) {
+                                imageData.value = event.target.result
+                            };
+                            reader.readAsDataURL(file)
+                            preview.src = imgUrl;
+                            preview.style.display = 'block';
+                            preview.onload = function () {
+                                URL.revokeObjectURL(imgUrl);
+                            }
+                        }
+                    });
+                </script>
+                </p>
+                <p>
+                    {{ form.about.label }}
+                    {{ form.about(class="form-control") }}<br>
+                    {% for error in form.about.errors %}
+                        <div class="alert alert-danger" role="alert">
+                            {{ error }}
+                        </div>
+                    {% endfor %}
+                </p>
+                <p>
+                    {{ form.phone_number.label }}
+                    {{ form.phone_number(class="form-control") }}<br>
+                    {% for error in form.phone_number.errors %}
+                        <div class="alert alert-danger" role="alert">
+                            {{ error }}
+                        </div>
+                    {% endfor %}
+                </p>
+                <p>
+                    {{ form.website.label }}
+                    {{ form.website(class="form-control") }}<br>
+                    {% for error in form.website.errors %}
+                        <div class="alert alert-danger" role="alert">
+                            {{ error }}
+                        </div>
+                    {% endfor %}
+                </p>
+                <p>
+                    {{ form.socials.label }}
+                    {{ form.socials(class="form-control") }}<br>
+                    {% for error in form.socials.errors %}
+                        <div class="alert alert-danger" role="alert">
+                            {{ error }}
+                        </div>
+                    {% endfor %}
+                </p>
+                <p>{{ form.submit(type="submit", class="btn btn-primary") }}</p>
+                <h5 class="critical">{{ message }}</h5>
+            </form>
+        </div>
+
+    </div>
+{% endblock %}

@@ -1,7 +1,8 @@
 from flask import Blueprint, make_response, jsonify, request
+from flask_login import current_user
 
 from ..errors import DataFormatError, NotFoundError
-from ..services import advertisement_service
+from ..services import advertisement_service, action_service
 
 blueprint = Blueprint(
     'advertisement_api',
@@ -11,10 +12,10 @@ blueprint = Blueprint(
 
 
 @blueprint.route('/api/advertisement/<int:id>', methods=['GET'])
-def get_user(id: int):
+def get_advertisement(id: int):
     advertisement = advertisement_service.get_advertisement(id)
     if advertisement is None:
-        return make_response(jsonify({'message': 'User not found!'}), 404)
+        return make_response(jsonify({'message': 'Advertisement not found!'}), 404)
     else:
         return make_response(jsonify(advertisement.to_dict()), 200)
 
@@ -43,6 +44,51 @@ def update_advertisement(id: int):
 def delete_advertisement(id: int):
     try:
         advertisement_service.delete_advertisement(id)
+        return make_response(jsonify({'message': 'success'}), 200)
+    except NotFoundError as e:
+        return make_response(jsonify({'message': str(e)}), 404)
+
+
+@blueprint.route('/api/advertisement/<int:id>/like', methods=['POST'])
+def like(id: int):
+    try:
+        action_service.like(id, request.get_json()['user_id'])
+        return make_response(jsonify({'message': 'success'}), 200)
+    except NotFoundError as e:
+        return make_response(jsonify({'message': str(e)}), 404)
+
+
+@blueprint.route('/api/advertisement/<int:id>/like', methods=['DELETE'])
+def unlike(id: int):
+    try:
+        action_service.unlike(request.get_json()['user_id'], id)
+        return make_response(jsonify({'message': 'success'}), 200)
+    except NotFoundError as e:
+        return make_response(jsonify({'message': str(e)}), 404)
+
+
+@blueprint.route('/api/advertisement/<int:id>/respond', methods=['POST'])
+def respond(id: int):
+    try:
+        action_service.respond(request.get_json()['user_id'], id)
+        return make_response(jsonify({'message': 'success'}), 200)
+    except NotFoundError as e:
+        return make_response(jsonify({'message': str(e)}), 404)
+
+
+@blueprint.route('/api/advertisement/<int:id>/respond', methods=['DELETE'])
+def unrespond(id: int):
+    try:
+        action_service.unrespond(request.get_json()['user_id'], id)
+        return make_response(jsonify({'message': 'success'}), 200)
+    except NotFoundError as e:
+        return make_response(jsonify({'message': str(e)}), 404)
+
+
+@blueprint.route('/api/advertisement/<int:id>/view', methods=['POST'])
+def view(id: int):
+    try:
+        action_service.view(request.get_json()['user_id'], id)
         return make_response(jsonify({'message': 'success'}), 200)
     except NotFoundError as e:
         return make_response(jsonify({'message': str(e)}), 404)

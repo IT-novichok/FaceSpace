@@ -21,7 +21,7 @@ def create_advertisement(data: dict[str, Any]):
     check_data(data)
     advertisement = Advertisement()
     try:
-        advertisement.cover = data['cover']
+        advertisement.cover = data['cover'] or advertisement.cover
         advertisement.title = data['title']
         advertisement.publisher_id = data['publisher_id']
         advertisement.content = data['content']
@@ -38,7 +38,7 @@ def update_advertisement(id: int, data: dict[str, Any]):
         raise NotFoundError('Advertisement not found!')
     else:
         check_data(data)
-        advertisement.cover = data.get('cover')
+        advertisement.cover = data.get('cover') or advertisement.cover
         advertisement.title = data.get('title') or advertisement.title
         advertisement.publisher_id = data.get('publisher_id') or advertisement.publisher_id
         advertisement.content = data.get('content') or advertisement.content

@@ -1,5 +1,5 @@
 from ..data import db, Advertisement
-from sqlalchemy import and_, or_
+from sqlalchemy import and_, or_,func
 
 
 def search_advertisement(text: str):
@@ -7,7 +7,7 @@ def search_advertisement(text: str):
     title_matches = [Advertisement.title.ilike(f'%{keyword}%') for keyword in keywords]
     content_matches = [Advertisement.content.ilike(f'%{keyword}%') for keyword in keywords]
     results = (db.session.query(Advertisement)
-               .where(and_(content_matches))
+               .where(or_(or_(*content_matches), or_(*title_matches)))
                .order_by(Advertisement.popularity.desc())
                .all())
     return results

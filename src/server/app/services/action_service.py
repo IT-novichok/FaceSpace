@@ -1,9 +1,11 @@
 from ..data import db, User, Action
 from ..errors import DataFormatError, NotFoundError
-from . import user_service, advertisement_service
-from typing import Any
-
-
+from . import user_service, advertisement_service, popularization_service
+action_ratings  = {
+    'view':1,
+    'like': 3,
+    'respond':5,
+}
 def get_action(subject_id: int, object_id: int, type: str):
     return db.session.query(Action).filter(Action.subject_id == subject_id, Action.object_id == object_id,
                                            Action.type == type).first()
@@ -37,24 +39,33 @@ def delete_action(subject_id: int, object_id: int, type: str):
 def view(subject_id: int, object_id: int):
     view = get_action(subject_id, object_id, 'view')
     if not view:
+        popularization_service.popularize(object_id, action_ratings['view'])
         add_action(subject_id, object_id, 'view')
 
 
 def like(subject_id: int, object_id: int):
     like = get_action(subject_id, object_id, 'like')
     if not like:
+        popularization_service.popularize(object_id, action_ratings['like'])
         add_action(subject_id, object_id, 'like')
 
 
 def respond(subject_id: int, object_id: int):
     response = get_action(subject_id, object_id, 'respond')
     if not response:
+        popularization_service.popularize(object_id, action_ratings['respond'])
         add_action(subject_id, object_id, 'respond')
 
 
 def unlike(subject_id: int, object_id: int):
-    delete_action(subject_id, object_id, 'like')
+    like = get_action(subject_id, object_id, 'like')
+    if like:
+        popularization_service.dispopularize(object_id, action_ratings['like'])
+        delete_action(subject_id, object_id, 'like')
 
 
 def unrespond(subject_id: int, object_id: int):
-    delete_action(subject_id, object_id, 'respond')
+    response = get_action(subject_id, object_id, 'respond')
+    if response:
+        popularization_service.dispopularize(object_id, action_ratings['respond'])
+        delete_action(subject_id, object_id, 'respond')
