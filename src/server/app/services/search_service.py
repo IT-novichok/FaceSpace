@@ -1,5 +1,5 @@
 from ..data import db, Advertisement
-from sqlalchemy import and_, or_,func
+from sqlalchemy import or_
 
 
 def search_advertisement(text: str):

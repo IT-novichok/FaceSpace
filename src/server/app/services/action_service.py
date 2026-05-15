@@ -1,11 +1,14 @@
-from ..data import db, User, Action
-from ..errors import DataFormatError, NotFoundError
+from ..data import db, Action
+from ..errors import NotFoundError
 from . import user_service, advertisement_service, popularization_service
-action_ratings  = {
-    'view':1,
+
+action_ratings = {
+    'view': 1,
     'like': 3,
-    'respond':5,
+    'respond': 5,
 }
+
+
 def get_action(subject_id: int, object_id: int, type: str):
     return db.session.query(Action).filter(Action.subject_id == subject_id, Action.object_id == object_id,
                                            Action.type == type).first()

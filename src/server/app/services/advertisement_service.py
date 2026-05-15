@@ -1,4 +1,4 @@
-from ..data import db, Advertisement, Category
+from ..data import db, Advertisement
 from ..errors import DataFormatError, NotFoundError
 from typing import Any
 

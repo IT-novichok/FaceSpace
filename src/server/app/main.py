@@ -1,16 +1,15 @@
 from flask import Flask, render_template, redirect, abort, jsonify, request
 from flask_login import login_user, LoginManager, login_required, logout_user, current_user
-
 from src.server.app.forms.settings_form import SettingsForm
 from .forms import *
 from .api import user_api
 from secrets import token_urlsafe
-from .data import db, User, Advertisement, Category
+from .data import db
 from .services import user_service, advertisement_service, category_service, action_service, search_service
 from .errors import DataFormatError
 from .utils import formatter
 
-host = '0.0.0.0'
+host = '0.127.0.1'
 secret_key = token_urlsafe(32)
 port = 8080
 utils = {

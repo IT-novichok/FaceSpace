@@ -1,5 +1,3 @@
-from wtforms.validators import email
-
 from ..data import User, db
 from ..errors import DataFormatError, NotFoundError
 from typing import Any
