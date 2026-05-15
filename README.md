@@ -55,3 +55,5 @@
 ![screenshot4.PNG](config/screenshots/screenshot4.PNG)
 ![screenshot5.PNG](config/screenshots/screenshot5.PNG)
 ![screenshot6.PNG](config/screenshots/screenshot6.PNG)
+# Демонстрация проекта
+Сервер сайта (Replit): https://d5aced7c-645b-41b1-b191-b1767fde1dd2-00-2apfr1eou4oq5.pike.replit.dev/
