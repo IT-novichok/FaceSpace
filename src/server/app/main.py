@@ -9,7 +9,7 @@ from .services import user_service, advertisement_service, category_service, act
 from .errors import DataFormatError
 from .utils import formatter
 
-host = '0.127.0.1'
+host = '0.0.0.0'
 secret_key = token_urlsafe(32)
 port = 8080
 utils = {
